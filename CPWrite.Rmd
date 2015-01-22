@@ -1,0 +1,16 @@
+---
+title: "Machine Learning"
+author: "András Morauszki"
+date: "Wednesday, January 21, 2015"
+output: html_document
+---
+
+For the prediction I've built a Gradient Boosting model (method = "gbm"). The reason was, that I wanted to make better use of the weak predictors. Of course, other classification models (E.g. rpart, rf) could have been used as well. I also used 10-fold cross-validation using the 'trControl' function, with the method 'cv'.  
+  
+Before fitting the model to the training set, I removed variables, that had too many NAs and those, that had too few unique values, whose frequency was unballanced (using the 'nearZeroVar' function of the 'caret' package). I also removed the first six variables of the training data (X, name, timestamp variables), so that only the predictors and the outcome ('classe') remained in the data frame.  
+    
+Then I fitted a  Gradient Boosting model to the data using all variables as predictors. The Accuracy was quite high (the mean Accuracy based on the model$results was 0.88, based on the confusion matrix the in-sample Accuracy was approximately 0.97), but the fitting of the model was slow due to the high number of predictors.   
+
+As a second model I've built another GBM using only the 8 strongest predictors (as listed by the varImp function). The accuracy of the second model was slightly lower, the mean Accuracy was 0.82 (based on the confusion matrix the in-sample Accuracy was cca. 0.93). As the accuracy measures were relatively close to that of the complete model, this second model offers a reasonable alternative.  
+  
+Although the expected out-of-sample error is quite high (1-0.82=0.18=18%), the model predicted 18 out of 20 cases in the test database.
